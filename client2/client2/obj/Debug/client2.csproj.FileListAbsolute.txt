@@ -1,0 +1,9 @@
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\bin\Debug\client2.exe.config
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\bin\Debug\client2.exe
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\bin\Debug\client2.pdb
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\obj\Debug\client2.Form1.resources
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\obj\Debug\client2.Properties.Resources.resources
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\obj\Debug\client2.csproj.GenerateResource.Cache
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\obj\Debug\client2.exe
+c:\users\pawel\documents\visual studio 2012\Projects\client2\client2\obj\Debug\client2.pdb
+c:\Users\Pawel\Documents\Visual Studio 2012\Projects\client2\client2\obj\Debug\client2.csprojResolveAssemblyReference.cache
