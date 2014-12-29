@@ -24,12 +24,10 @@ pthread_mutex_t mutex;
 
 void *inertial(void){
 	double t;
-
 	clock_gettime(CLOCK_REALTIME, &OBJstart);
-
 	while(1){
 		clock_gettime(CLOCK_REALTIME, &OBJstop);
-		t = (OBJstart.tv_sec - OBJstart.tv_sec)*1000 + (OBJstop.tv_nsec-OBJstart.tv_nsec)/1000000;
+		t = (OBJstop.tv_sec - OBJstart.tv_sec)*1000 + (OBJstop.tv_nsec-OBJstart.tv_nsec)/1000000;
 		if (t >= 10){
 			clock_gettime(CLOCK_REALTIME, &OBJstart);
 			pthread_mutex_lock(&mutex);
@@ -41,22 +39,16 @@ void *inertial(void){
 }
 void *pid(void){
 	double t;
-
 	clock_gettime(CLOCK_REALTIME, &PIDstart);
-	clock_gettime(CLOCK_REALTIME, &start);
 	while(1){
 		clock_gettime(CLOCK_REALTIME, &PIDstop);
 		t = (PIDstop.tv_sec - PIDstart.tv_sec)*1000 + (PIDstop.tv_nsec-PIDstart.tv_nsec)/1000000;
-
 		if (t >= 10){ //t>=10ms
 			clock_gettime(CLOCK_REALTIME, &PIDstart);
 			pthread_mutex_lock(&mutex);
 			e = x - y;
 			ie += e;
 			de = e - ep;
-
-			//printf("x:%d, y:%f, de:%f, e:%f, ep:%f \n",x,y,de,e,ep);
-
 			st = Kp*(e+Ti*ie*0.01+Td*de*100);
 			ep = e;
 			pthread_mutex_unlock(&mutex);
