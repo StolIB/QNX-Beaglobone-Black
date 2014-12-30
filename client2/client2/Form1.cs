@@ -17,8 +17,6 @@ namespace client2
     public partial class Form1 : Form
     {
         
-        //System.Net.Sockets.TcpClient clientSocket;
-
         UdpClient udpClient;
 
         Thread thread;
@@ -27,8 +25,7 @@ namespace client2
         DateTime t1;
         DateTime t2;
         
-        NetworkStream serverStream;
-
+       
         public Form1()
         {
             InitializeComponent();
@@ -47,10 +44,10 @@ namespace client2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //chart1.Series["Series2"].Points.Clear();
             thread = new Thread(new ThreadStart(getData));
             t1 = DateTime.Now;
             thread.Start();
+            button6.Enabled = true;
         }
 
         public void getData() {
@@ -61,7 +58,6 @@ namespace client2
                 string returndata = System.Text.Encoding.ASCII.GetString(content);
                 
                 rec = ((float)(Convert.ToInt32(returndata))) / 100;
-                SetText(returndata);
                 t2 = DateTime.Now;
                 System.TimeSpan diff = t2 - t1;
                 float millis = (float)diff.TotalMilliseconds;
@@ -158,31 +154,7 @@ namespace client2
 
             byte[] td = toByte(textBox8.Text, 500000);
             udpClient.Send(td, td.Length);
-            /*if (clientSocket.Connected)
-            {
-                byte[] k = toByte(textBox6.Text, 100000);
-                serverStream.Write(k, 0, k.Length);
-                serverStream.Flush();
-
-                byte[] inStream = new byte[10025];
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-
-                byte[] ti = toByte(textBox7.Text, 300000);
-                serverStream.Write(ti, 0, ti.Length);
-                serverStream.Flush();
-
-                inStream = new byte[10025];
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-
-                byte[] td = toByte(textBox8.Text, 500000);
-                serverStream.Write(td, 0, td.Length);
-                serverStream.Flush();
-
-                inStream = new byte[10025];
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-
-                msg("Nastawy zmienione");
-            }*/
+            
         }
 
         private byte[] toByte(string text, int mul){
@@ -226,26 +198,9 @@ namespace client2
             {
                 msg("Połączono");
                 button4.Enabled = true;
-            }
-            /*clientSocket = new System.Net.Sockets.TcpClient();
-            
-            try
-            {
-                clientSocket.Connect(textBox3.Text, Convert.ToInt32(textBox4.Text));
-            }
-            catch
-            {
-                msg("Błąd podczas łączenia. Sprawdź adres hosta i port");
-            }
-
-            if (clientSocket.Connected)
-            {
-                msg("Połaczono");
-                serverStream = clientSocket.GetStream();
                 button1.Enabled = true;
-                button4.Enabled = true;
-                
-            }*/
+            }
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
