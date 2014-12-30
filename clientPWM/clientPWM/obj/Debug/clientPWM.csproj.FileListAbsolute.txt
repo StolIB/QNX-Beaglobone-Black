@@ -1,0 +1,9 @@
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\bin\Debug\clientPWM.exe.config
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\bin\Debug\clientPWM.exe
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\bin\Debug\clientPWM.pdb
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.csprojResolveAssemblyReference.cache
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.Form1.resources
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.Properties.Resources.resources
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.csproj.GenerateResource.Cache
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.exe
+c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.pdb

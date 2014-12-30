@@ -10,13 +10,17 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Threading;
 using System.Globalization;
+using System.Net;
 
 namespace client2
 {
     public partial class Form1 : Form
     {
         
-        System.Net.Sockets.TcpClient clientSocket;
+        //System.Net.Sockets.TcpClient clientSocket;
+
+        UdpClient udpClient;
+
         Thread thread;
         int i = 0;
         bool clear;
@@ -43,52 +47,27 @@ namespace client2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            chart1.Series["Series2"].Points.Clear();
+            //chart1.Series["Series2"].Points.Clear();
             thread = new Thread(new ThreadStart(getData));
-            if (clientSocket.Connected)
-            {
-                
-                t1 = DateTime.Now;
-                thread.Start();
-                button1.Enabled = false;
-            }
-            
+            t1 = DateTime.Now;
+            thread.Start();
         }
 
         public void getData() {
-            
-            
-            while (true)
-            {
-                if (clear)
-                    clearChart();
-                i++;
-                int intValue = Convert.ToInt32(label1.Text);
-                byte[] intBytes = BitConverter.GetBytes(intValue);
-                Array.Reverse(intBytes);
-                byte[] result = intBytes;
-                byte[] outStream = result;
-                serverStream.Write(outStream, 0, outStream.Length);
-                serverStream.Flush();
-
-                byte[] inStream = new byte[10025];
-                serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
-                string returndata = System.Text.Encoding.ASCII.GetString(inStream);
-                try
-                {
-                    float rec = (float)(Convert.ToInt32(returndata)) / 100;
-                    SetText(rec.ToString());
-                    t2 = DateTime.Now;
-                    System.TimeSpan diff = t2 - t1;
-                    float millis = (float)diff.TotalMilliseconds;
-                    AddToChart(Math.Round(millis / 1000, 2), rec);
-                }
-                catch { }
+            float rec;
+            while (true) {
+                IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, Convert.ToInt32(textBox4.Text));
+                byte[] content = udpClient.Receive(ref remoteIPEndPoint);
+                string returndata = System.Text.Encoding.ASCII.GetString(content);
                 
-                Thread.Sleep(50);
-                 
+                rec = ((float)(Convert.ToInt32(returndata))) / 100;
+                SetText(returndata);
+                t2 = DateTime.Now;
+                System.TimeSpan diff = t2 - t1;
+                float millis = (float)diff.TotalMilliseconds;
+                AddToChart(Math.Round(millis / 1000, 2), rec);
             }
+            
         }
         delegate void clearChartCallback();
 
@@ -123,14 +102,14 @@ namespace client2
 
         private void SetText(string text)
         {
-            if (this.textBox1.InvokeRequired)
+            if (this.textBox5.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetText);
                 this.Invoke(d, new object[] { text });
             }
             else
             {
-                this.textBox1.Text = text;
+                this.textBox5.Text = text;
             }
         }
 
@@ -142,14 +121,16 @@ namespace client2
                 thread.Abort();
                 thread.Join();
             }
-            clientSocket.Client.Disconnect(false);
-            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            label1.Text = textBox2.Text;
-            trackBar1.Value = Convert.ToInt32(label1.Text);
+            if (textBox2.Text.Length > 0)
+            {
+                label1.Text = textBox2.Text;
+                trackBar1.Value = Convert.ToInt32(label1.Text);
+            }
+            
         }
 
         private void chart1_Click(object sender, EventArgs e)
@@ -169,7 +150,15 @@ namespace client2
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (clientSocket.Connected)
+            byte[] k = toByte(textBox6.Text, 100000);
+            udpClient.Send(k, k.Length);
+
+            byte[] ti = toByte(textBox7.Text, 300000);
+            udpClient.Send(ti, ti.Length);
+
+            byte[] td = toByte(textBox8.Text, 500000);
+            udpClient.Send(td, td.Length);
+            /*if (clientSocket.Connected)
             {
                 byte[] k = toByte(textBox6.Text, 100000);
                 serverStream.Write(k, 0, k.Length);
@@ -193,7 +182,7 @@ namespace client2
                 serverStream.Read(inStream, 0, (int)clientSocket.ReceiveBufferSize);
 
                 msg("Nastawy zmienione");
-            }
+            }*/
         }
 
         private byte[] toByte(string text, int mul){
@@ -224,7 +213,21 @@ namespace client2
 
         private void button5_Click(object sender, EventArgs e)
         {
-            clientSocket = new System.Net.Sockets.TcpClient();
+            try
+            {
+                udpClient.Connect(textBox3.Text, Convert.ToInt32(textBox4.Text));
+
+            }
+            catch
+            {
+                msg("Błąd przy łaczeniu z hostem");
+            }
+            if (udpClient.Client.Connected)
+            {
+                msg("Połączono");
+                button4.Enabled = true;
+            }
+            /*clientSocket = new System.Net.Sockets.TcpClient();
             
             try
             {
@@ -242,7 +245,46 @@ namespace client2
                 button1.Enabled = true;
                 button4.Enabled = true;
                 
+            }*/
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            udpClient = new UdpClient();
+        }
+        private void SendF()
+        {
+            if (label1.Text.Length > 0)
+            {
+                int Val = 1;
+                try
+                {
+                    Val = Convert.ToInt32(label1.Text);
+                }
+                catch
+                {
+                    msg("Wartośc zadana musi byc liczba całkowitą");
+                }
+                byte[] intBytes = BitConverter.GetBytes(Val);
+                Array.Reverse(intBytes);
+                byte[] outStream = intBytes;
+                try
+                {
+                    udpClient.Send(outStream, outStream.Length);
+                }
+                catch (Exception exc)
+                {
+                    msg(exc.ToString());
+                }
+
             }
+        }
+
+       
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            SendF();
         }
 
     }
