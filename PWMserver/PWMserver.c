@@ -23,13 +23,26 @@ struct sockaddr_in servaddr,cliaddr;
 socklen_t len;
 char mesg[1000];
 pthread_t communication, pwm;
-
+pthread_t primes[30];
 uintptr_t gpio_base;
 
 struct timespec start, stop, start2, stop2;
 
 int frequency = 1;
-
+void *do_primes()
+{
+    unsigned long i, num, primes = 0;
+    //for (num = 1; num <= 10000000; ++num) {
+    while(1){
+    	num++;
+        for (i = 2; (i <= num) && (num % i != 0); ++i);
+        if (i == num){
+            ++primes;
+            printf("tid:%d, prime: %d\n",pthread_self(), num);
+        }
+    }
+    printf("Calculated %d primes.\n", primes);
+}
 void *_pwm(){
 	int state = 1;
 	double t, t2;
@@ -72,7 +85,7 @@ void *rec(){
 }
 int main(int argc, char**argv)
 {
-
+	int p = 0;
 
 	ThreadCtl (_NTO_TCTL_IO,NULL);
 	gpio_base = mmap_device_io(AM335X_GPIO_SIZE, AM335X_GPIO1_BASE);
@@ -93,9 +106,16 @@ int main(int argc, char**argv)
 	servaddr.sin_addr.s_addr=htonl(INADDR_ANY);
 	servaddr.sin_port=htons(5002);
 	bind(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+
 	pthread_create(&communication, &attr, rec, NULL);
 	pthread_create(&pwm, &attr, _pwm, NULL);
+	int i = 0;
+	if (p){
+		for (i = 0; i < 30; i++)
+			pthread_create(&primes[i], &attr, do_primes, NULL);
+	}
 	pthread_join(communication, NULL);
+
 	munmap_device_io(gpio_base, AM335X_GPIO_SIZE);
 
 }
