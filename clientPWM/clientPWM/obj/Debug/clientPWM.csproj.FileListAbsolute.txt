@@ -7,3 +7,12 @@ c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Deb
 c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.csproj.GenerateResource.Cache
 c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.exe
 c:\users\pawel\documents\visual studio 2012\Projects\clientPWM\clientPWM\obj\Debug\clientPWM.pdb
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\bin\Debug\clientPWM.exe.config
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.exe
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.pdb
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\bin\Debug\clientPWM.exe
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\bin\Debug\clientPWM.pdb
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.csprojResolveAssemblyReference.cache
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.Form1.resources
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.Properties.Resources.resources
+D:\Users\Pawel\ide-5.0-workspace\clientPWM\clientPWM\obj\Debug\clientPWM.csproj.GenerateResource.Cache

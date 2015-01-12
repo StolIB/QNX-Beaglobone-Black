@@ -16,3 +16,12 @@ D:\Pawel\qnx\client2\client2\obj\Release\client2.csprojResolveAssemblyReference.
 D:\Pawel\qnx\client2\client2\obj\Release\client2.Form1.resources
 D:\Pawel\qnx\client2\client2\obj\Release\client2.Properties.Resources.resources
 D:\Pawel\qnx\client2\client2\obj\Release\client2.csproj.GenerateResource.Cache
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\bin\Release\client2.exe.config
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.exe
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.pdb
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\bin\Release\client2.exe
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\bin\Release\client2.pdb
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.csprojResolveAssemblyReference.cache
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.Form1.resources
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.Properties.Resources.resources
+D:\Users\Pawel\ide-5.0-workspace\client2\client2\obj\Release\client2.csproj.GenerateResource.Cache

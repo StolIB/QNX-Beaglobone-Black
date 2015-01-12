@@ -1,4 +1,4 @@
-#include <stdio.h>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -10,7 +10,7 @@
 #define PROC 1
 #define PID 2
 
-float Kp = 1, Ti = 1, Td = 0;
+float Kp = 1, Ti = 3, Td = 0.1;
 double T = 2;
 int k = 1, x = 0, _x = 0, rec = 0;
 float y = 0, y1 = 0, e = 0, ep = 0, de = 0, ie = 0, st = 0;
@@ -43,6 +43,7 @@ void *inertial(void){
 			pthread_mutex_unlock(&mutex);
 		}
 	}
+	return NULL;
 }
 void *pid(void){
 	double t;
@@ -53,14 +54,16 @@ void *pid(void){
 		if (t >= 10){ //t>=10ms
 			clock_gettime(CLOCK_REALTIME, &PIDstart);
 			pthread_mutex_lock(&mutex);
-			e = x - y;
+			e = (float)x - y;
 			ie += e;
 			de = e - ep;
+			//printf("e:%f ie:%f de:%f ep:%f x:%d y:%f\n", e,ie,de,ep,x,y);
 			st = Kp*(e+Ti*ie*0.01+Td*de*100);
 			ep = e;
 			pthread_mutex_unlock(&mutex);
 		}
 	}
+	return NULL;
 }
 
 void *reciving(){
@@ -87,6 +90,7 @@ void *reciving(){
 		}
 		pthread_mutex_unlock(&mutex);
 	}
+	return NULL;
 }
 void *sending(){
 	while(1){
@@ -94,6 +98,7 @@ void *sending(){
 		sendto(sockfd,&_y,sizeof(_y),0,(struct sockaddr *)&cliaddr,sizeof(cliaddr));
 		delay(50);
 	}
+	return NULL;
 }
 int main( int argc, char *argv[] )
 {

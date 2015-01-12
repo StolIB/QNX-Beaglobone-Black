@@ -61,7 +61,7 @@
             this.hostTxt.Name = "hostTxt";
             this.hostTxt.Size = new System.Drawing.Size(137, 20);
             this.hostTxt.TabIndex = 1;
-            this.hostTxt.Text = "192.168.1.103";
+            this.hostTxt.Text = "10.9.112.160";
             // 
             // portTxt
             // 

@@ -32,18 +32,9 @@ struct timespec start, stop, start2, stop2, start3, stop3;
 int frequency = 1;
 void *do_primes()
 {
-	int j;
-    unsigned long i, num, _primes = 0;
+	unsigned long i, num, _primes = 0;
     double t2;
-    clock_gettime(CLOCK_REALTIME, &start3);
     while(1){
-    	j++;
-    	clock_gettime(CLOCK_REALTIME, &stop3);
-		t2 = (stop3.tv_sec - start3.tv_sec)*1000000000 + (stop3.tv_nsec-start3.tv_nsec);
-		if (t2 > 1000000000){
-			clock_gettime(CLOCK_REALTIME, &start3);
-			printf("primes: %d\n", j);
-		}
     	num++;
         for (i = 2; (i <= num) && (num % i != 0); ++i);
         if (i == num){
@@ -54,32 +45,22 @@ void *do_primes()
     printf("Calculated %d primes.\n", _primes);
 }
 void *_pwm(){
+
 	int i = 0;
 	int state = 1;
 	double t, t2;
 	clock_gettime(CLOCK_REALTIME, &start);
-	clock_gettime(CLOCK_REALTIME, &start2);
 	while(1){
-		i++;
-		clock_gettime(CLOCK_REALTIME, &stop2);
-		t2 = (stop2.tv_sec - start2.tv_sec)*1000000000 + (stop2.tv_nsec-start2.tv_nsec);
-		if (t2 > 1000000000){
-			clock_gettime(CLOCK_REALTIME, &start2);
-			printf("pwm: %d\n", i);
-		}
 		clock_gettime(CLOCK_REALTIME, &stop);
 		t = (stop.tv_sec - start.tv_sec)*1000000000 + (stop.tv_nsec-start.tv_nsec);
 		if (t >= (double)(1000000000/(frequency*2))){
-
 			clock_gettime(CLOCK_REALTIME, &start);
 			if (state == 1)
 				out32(gpio_base + GPIO_DATAOUT, (1<<4) | (1<<21) | (0<<22));
 			else
 				out32(gpio_base + GPIO_DATAOUT, (0<<4) | (0<<21) | (1<<22));
 			state = (++state)%2;
-
 		}
-
 	}
 }
 void *rec(){
@@ -114,13 +95,13 @@ int main(int argc, char**argv)
 
 	struct sched_param params;
 
-	pthread_attr_t attr, attr2;
+	pthread_attr_t attr;
 	pthread_attr_init( &attr );
-	pthread_attr_init( &attr2 );
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	pthread_attr_setdetachstate(&attr2, PTHREAD_CREATE_JOINABLE);
-	//params.sched_priority = 20;
+	//pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+	//params.sched_priority = 50;
 	//pthread_attr_setschedparam(&attr, &params);
+
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
 
 	sockfd=socket(AF_INET,SOCK_DGRAM,0);
@@ -130,14 +111,16 @@ int main(int argc, char**argv)
 	servaddr.sin_port=htons(5002);
 	bind(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
 
-	pthread_create(&communication, &attr2, rec, NULL);
+	pthread_create(&communication, &attr, rec, NULL);
 	//ThreadCreate(0,_pwm, NULL, &attr);
 	pthread_create(&pwm, &attr, _pwm, NULL);
-	//pthread_setschedparam
+	printf("pwm: %d\n", pwm);
+	pthread_setschedprio(pthread_self(), 30);
+
 	int i = 0;
 	if (0){
 		for (i = 0; i < 1; i++)
-			pthread_create(&primes[i], &attr2, do_primes, NULL);
+			pthread_create(&primes[i], &attr, do_primes, NULL);
 	}
 	pthread_join(communication, NULL);
 

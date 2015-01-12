@@ -239,7 +239,23 @@ namespace client2
 
         private void button6_Click(object sender, EventArgs e)
         {
+            if (button1.Enabled) {
+                thread = new Thread(new ThreadStart(getData));
+                t1 = DateTime.Now;
+                thread.Start();
+                button6.Enabled = true;
+            }
             SendF();
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
     }
