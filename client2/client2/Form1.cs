@@ -24,7 +24,7 @@ namespace client2
         bool clear;
         DateTime t1;
         DateTime t2;
-        
+        int seria = 0;
        
         public Form1()
         {
@@ -44,24 +44,37 @@ namespace client2
 
         private void button1_Click(object sender, EventArgs e)
         {
+            seria++;
+            chart1.Series.Add("Series" + seria.ToString());
+            chart1.Series["Series" + seria.ToString()].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             thread = new Thread(new ThreadStart(getData));
             t1 = DateTime.Now;
             thread.Start();
             button6.Enabled = true;
+            byte[] start = toByte("1", 700000);
+            udpClient.Send(start, start.Length);
+            SendF();
         }
 
         public void getData() {
             float rec;
             while (true) {
+                //if (clear)
+                    //clearChart();
                 IPEndPoint remoteIPEndPoint = new IPEndPoint(IPAddress.Any, Convert.ToInt32(textBox4.Text));
-                byte[] content = udpClient.Receive(ref remoteIPEndPoint);
-                string returndata = System.Text.Encoding.ASCII.GetString(content);
-                
-                rec = ((float)(Convert.ToInt32(returndata))) / 100;
-                t2 = DateTime.Now;
-                System.TimeSpan diff = t2 - t1;
-                float millis = (float)diff.TotalMilliseconds;
-                AddToChart(Math.Round(millis / 1000, 2), rec);
+                try
+                {
+                    byte[] content = udpClient.Receive(ref remoteIPEndPoint);
+                    string returndata = System.Text.Encoding.ASCII.GetString(content);
+
+                    rec = ((float)(Convert.ToInt32(returndata))) / 100;
+                    t2 = DateTime.Now;
+                    System.TimeSpan diff = t2 - t1;
+                    float millis = (float)diff.TotalMilliseconds;
+                    AddToChart(Math.Round(millis / 1000, 2), rec);
+                    textBox1.Text = rec.ToString();
+                }
+                catch { }
             }
             
         }
@@ -91,7 +104,7 @@ namespace client2
                 this.Invoke(inv, new object[] { x,y });
             }
             else
-                chart1.Series["Series2"].Points.AddXY(x, y);
+                chart1.Series["Series" + seria.ToString()].Points.AddXY(x, y);
         }
 
         delegate void SetTextCallback(string text);
@@ -111,12 +124,18 @@ namespace client2
 
         private void button2_Click(object sender, EventArgs e)
         {
+            byte[] reset = toByte("1", 1000000);
+            udpClient.Send(reset, reset.Length);
+
+            
+
             button1.Enabled = true;
             if (thread.IsAlive)
             {
                 thread.Abort();
                 thread.Join();
             }
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -239,12 +258,12 @@ namespace client2
 
         private void button6_Click(object sender, EventArgs e)
         {
-            if (button1.Enabled) {
+            /*if (button1.Enabled) {
                 thread = new Thread(new ThreadStart(getData));
                 t1 = DateTime.Now;
                 thread.Start();
                 button6.Enabled = true;
-            }
+            }*/
             SendF();
         }
 
@@ -256,6 +275,12 @@ namespace client2
         private void textBox8_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            byte[] t = toByte(textBox9.Text, 900000);
+            udpClient.Send(t, t.Length);
         }
 
     }

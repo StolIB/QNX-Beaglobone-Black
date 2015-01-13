@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint5 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -61,6 +59,9 @@
             this.trackBar4 = new System.Windows.Forms.TrackBar();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -126,18 +127,12 @@
             // 
             // chart1
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart1.Legends.Add(legend5);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(417, 243);
             this.chart1.Name = "chart1";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series5.Legend = "Legend1";
-            series5.Name = "Series2";
-            series5.Points.Add(dataPoint5);
-            this.chart1.Series.Add(series5);
             this.chart1.Size = new System.Drawing.Size(824, 402);
             this.chart1.TabIndex = 7;
             this.chart1.Text = "chart1";
@@ -236,7 +231,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(415, 100);
+            this.textBox6.Location = new System.Drawing.Point(413, 121);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(152, 20);
             this.textBox6.TabIndex = 18;
@@ -244,7 +239,7 @@
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(604, 97);
+            this.textBox7.Location = new System.Drawing.Point(602, 118);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(152, 20);
             this.textBox7.TabIndex = 19;
@@ -253,7 +248,7 @@
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(790, 97);
+            this.textBox8.Location = new System.Drawing.Point(788, 118);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(152, 20);
             this.textBox8.TabIndex = 20;
@@ -263,7 +258,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(414, 84);
+            this.label7.Location = new System.Drawing.Point(412, 105);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(20, 13);
             this.label7.TabIndex = 21;
@@ -272,7 +267,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(670, 84);
+            this.label8.Location = new System.Drawing.Point(668, 105);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(16, 13);
             this.label8.TabIndex = 22;
@@ -281,7 +276,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(839, 84);
+            this.label9.Location = new System.Drawing.Point(837, 105);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(20, 13);
             this.label9.TabIndex = 23;
@@ -290,7 +285,7 @@
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(977, 76);
+            this.button4.Location = new System.Drawing.Point(975, 97);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(108, 35);
             this.button4.TabIndex = 24;
@@ -300,7 +295,7 @@
             // 
             // trackBar2
             // 
-            this.trackBar2.Location = new System.Drawing.Point(418, 134);
+            this.trackBar2.Location = new System.Drawing.Point(416, 155);
             this.trackBar2.Maximum = 1000;
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(149, 45);
@@ -310,7 +305,7 @@
             // 
             // trackBar3
             // 
-            this.trackBar3.Location = new System.Drawing.Point(604, 134);
+            this.trackBar3.Location = new System.Drawing.Point(602, 155);
             this.trackBar3.Maximum = 1000;
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Size = new System.Drawing.Size(150, 45);
@@ -320,7 +315,7 @@
             // 
             // trackBar4
             // 
-            this.trackBar4.Location = new System.Drawing.Point(790, 134);
+            this.trackBar4.Location = new System.Drawing.Point(788, 155);
             this.trackBar4.Maximum = 5000;
             this.trackBar4.Name = "trackBar4";
             this.trackBar4.Size = new System.Drawing.Size(150, 45);
@@ -348,11 +343,41 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(606, 46);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(147, 20);
+            this.textBox9.TabIndex = 30;
+            this.textBox9.Text = "1";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(603, 29);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(116, 13);
+            this.label10.TabIndex = 31;
+            this.label10.Text = "Stała czasowa obiektu";
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(770, 29);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(86, 36);
+            this.button7.TabIndex = 32;
+            this.button7.Text = "Ok";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 676);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.textBox9);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.trackBar4);
@@ -426,6 +451,9 @@
         private System.Windows.Forms.TrackBar trackBar4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button7;
     }
 }
 

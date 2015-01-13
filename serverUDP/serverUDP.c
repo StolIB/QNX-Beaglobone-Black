@@ -11,13 +11,14 @@
 #define PID 2
 
 float Kp = 1, Ti = 3, Td = 0.1;
-double T = 2;
+double T = 1;
 int k = 1, x = 0, _x = 0, rec = 0;
 float y = 0, y1 = 0, e = 0, ep = 0, de = 0, ie = 0, st = 0;
 char _y[100];
 
+int start = 0;
 
-struct timespec PIDstart, PIDstop, OBJstart, OBJstop, start, stop;
+struct timespec PIDstart, PIDstop, OBJstart, OBJstop;
 
 pthread_t threads[3];
 pthread_t precive, psend;
@@ -33,14 +34,16 @@ void *inertial(void){
 	double t;
 	clock_gettime(CLOCK_REALTIME, &OBJstart);
 	while(1){
-		clock_gettime(CLOCK_REALTIME, &OBJstop);
-		t = (OBJstop.tv_sec - OBJstart.tv_sec)*1000 + (OBJstop.tv_nsec-OBJstart.tv_nsec)/1000000;
-		if (t >= 10){
-			clock_gettime(CLOCK_REALTIME, &OBJstart);
-			pthread_mutex_lock(&mutex);
-			y = (1/(T*100))*(k*st-y1)+y1;
-			y1 = y;
-			pthread_mutex_unlock(&mutex);
+		if (start){
+			clock_gettime(CLOCK_REALTIME, &OBJstop);
+			t = (OBJstop.tv_sec - OBJstart.tv_sec)*1000 + (OBJstop.tv_nsec-OBJstart.tv_nsec)/1000000;
+			if (t >= 10){
+				clock_gettime(CLOCK_REALTIME, &OBJstart);
+				pthread_mutex_lock(&mutex);
+				y = (1/(T*100))*(k*st-y1)+y1;
+				y1 = y;
+				pthread_mutex_unlock(&mutex);
+			}
 		}
 	}
 	return NULL;
@@ -49,18 +52,20 @@ void *pid(void){
 	double t;
 	clock_gettime(CLOCK_REALTIME, &PIDstart);
 	while(1){
-		clock_gettime(CLOCK_REALTIME, &PIDstop);
-		t = (PIDstop.tv_sec - PIDstart.tv_sec)*1000 + (PIDstop.tv_nsec-PIDstart.tv_nsec)/1000000;
-		if (t >= 10){ //t>=10ms
-			clock_gettime(CLOCK_REALTIME, &PIDstart);
-			pthread_mutex_lock(&mutex);
-			e = (float)x - y;
-			ie += e;
-			de = e - ep;
-			//printf("e:%f ie:%f de:%f ep:%f x:%d y:%f\n", e,ie,de,ep,x,y);
-			st = Kp*(e+Ti*ie*0.01+Td*de*100);
-			ep = e;
-			pthread_mutex_unlock(&mutex);
+		if (start){
+			clock_gettime(CLOCK_REALTIME, &PIDstop);
+			t = (PIDstop.tv_sec - PIDstart.tv_sec)*1000 + (PIDstop.tv_nsec-PIDstart.tv_nsec)/1000000;
+			if (t >= 10){ //t>=10ms
+				clock_gettime(CLOCK_REALTIME, &PIDstart);
+				pthread_mutex_lock(&mutex);
+				e = (float)x - y;
+				ie += e;
+				de = e - ep;
+				//printf("e:%f ie:%f de:%f ep:%f x:%d y:%f\n", e,ie,de,ep,x,y);
+				st = Kp*(e+Ti*ie*0.01+Td*de*100);
+				ep = e;
+				pthread_mutex_unlock(&mutex);
+			}
 		}
 	}
 	return NULL;
@@ -73,20 +78,40 @@ void *reciving(){
 		n = recvfrom(sockfd,&_rec,1000,0,(struct sockaddr *)&cliaddr,&len);
 		rec = ntohl(_rec);
 		pthread_mutex_lock(&mutex);
-		if (rec >= 500000){
+		printf("rec: %d\n", rec);
+		if (rec >= 1000000){
+			printf("reset\n");
+			x = 0;
+			y = 0;
+			y1 = 0;
+			e = 0;
+			ep = 0;
+			de = 0;
+			ie = 0;
+		}
+		else if (rec >= 900000){
+			T=(float)(rec-900000)/100;
+			printf("T: %f\n", T);
+		}
+		else if (rec >= 700000){
+			start = 1;
+			printf("start\n");
+		}
+		else if (rec >= 500000){
 			Td = (float)(rec-500000)/100;
-			printf("Td: %f rec: %d\n", Td, rec);
+			printf("Td: %f\n", Td);
 		}
 		else if (rec >= 300000){
 			Ti = (float)(rec-300000)/100;
-			printf("Ti: %f rec: %d\n", Ti, rec);
+			printf("Ti: %f\n", Ti);
 		}
 		else if (rec >= 100000){
 			Kp = (float)(rec-100000)/100;
-			printf("Kp: %f rec: %d\n", Kp, rec);
+			printf("Kp: %f\n", Kp);
 		}
 		else {
 			x = rec;
+			printf("wartosc zadana: %d\n", x);
 		}
 		pthread_mutex_unlock(&mutex);
 	}
